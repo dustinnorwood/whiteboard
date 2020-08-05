@@ -23,6 +23,7 @@ library
                , websockets-snap
   exposed-modules:
     Backend
+    Backend.Server
   ghc-options: -Wall
 
 executable backend
