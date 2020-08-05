@@ -100,6 +100,7 @@ talk state c@(Client user room conn) = flip finally disconnect . forever $ do
             T.putStrLn "Decoded msgC is nothing..."
         Just (C2SDraw point) -> readMVar state >>= broadcastExcept room user (S2CDraw point)
         Just C2SClear -> readMVar state >>= broadcastExcept room user S2CClear
+        Just m -> T.putStrLn $ "Decoded " <> T.pack (show m)
   where
     disconnect = do
         -- Remove client and return new state
