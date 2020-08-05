@@ -11,7 +11,6 @@ module Frontend where
 
 import Control.Lens
 import Control.Monad
-import Control.Monad.Fix (MonadFix)
 import qualified Data.Aeson as Aeson
 import Data.ByteString.Lazy (fromStrict, toStrict)
 import Data.List.NonEmpty (nonEmpty)
