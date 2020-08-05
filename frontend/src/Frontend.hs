@@ -72,12 +72,7 @@ app route = prerender_ (pure ()) $ do
       _ -> Nothing
 
 loginWidget
-  :: ( DomBuilder t m
-     , MonadFix m
-     , PostBuild t m
-     , PerformEvent t m
-     , Prerender js t m
-     )
+  :: MonadWidget t m
   => m (Event t C2S)
 loginWidget = el "div" $ do
   rec
@@ -93,8 +88,8 @@ loginWidget = el "div" $ do
       & inputElementConfig_setValue .~ fmap (const "") eSubmit
       & inputElementConfig_elementConfig . elementConfig_initialAttributes .~
         ("placeholder" =: "Enter password")
-    createRoom <- button "Create room"
-    joinRoom <- button "Join room"
+    createRoom <- dynButton "Create room"
+    joinRoom <- dynButton "Join room"
     -- Clean the name a bit (todo, clean more):
     let ev f = tag ((\a b c -> f a (RoomConfig b c)) <$> (fmap T.strip . current $ value tUser)
                       <*> (fmap T.strip . current $ value tName)
@@ -111,8 +106,8 @@ whiteboardWidget
   -> m (Event t C2S)
 whiteboardWidget inDrawEv initialDrawing = do
   rec
-    let canvasW = 1600
-        canvasH = 1200
+    let canvasW = 1600 :: Int
+        canvasH = 1200 :: Int
         canvasAttrs = M.fromList
           [ ("height" :: Text, T.pack (show canvasH))
           , ("width" , T.pack (show canvasW))
@@ -154,12 +149,12 @@ whiteboardWidget inDrawEv initialDrawing = do
       performEvent_ (ffor (attach (current d2DDyn) $ leftmost [fullDrawEv, inDrawEv]) myAction)
       return coordsEv
     (blackEv, blueEv, redEv, greenEv, whiteEv, clearEv) <- elClass "div" "button-bar" $ do
-      bkEv <- fmap (const "#000000") <$> button "Black"
-      bEv <- fmap (const "#0000FF") <$> button "Blue"
-      rEv <- fmap (const "#FF0000") <$> button "Red"
-      gEv <- fmap (const "#00FF00") <$> button "Green"
-      wEv <- fmap (const "#FFFFFF") <$> button "White"
-      clEv <- button "Clear"
+      bkEv <- fmap (const "#000000") <$> dynButton "Black"
+      bEv <- fmap (const "#0000FF") <$> dynButton "Blue"
+      rEv <- fmap (const "#FF0000") <$> dynButton "Red"
+      gEv <- fmap (const "#00FF00") <$> dynButton "Green"
+      wEv <- fmap (const "#FFFFFF") <$> dynButton "White"
+      clEv <- dynButton "Clear"
       pure (bkEv, bEv, rEv, gEv, wEv, clEv)
     colorDyn <- holdDyn "#000000" $ leftmost [blackEv, blueEv, redEv, greenEv, whiteEv]
     let colorDrawEv = attachPromptlyDynWith (\c (s,e) -> DrawEvent c s e) colorDyn drawEv
@@ -192,3 +187,8 @@ wsEv route msgSendEv = case checkEncoder fullRouteEncoder of
         ws <- webSocket (render uri) $ def & webSocketConfig_send .~ sendEv
         let mS2c = fromStrict <$> _webSocket_recv ws
         pure $ fmapMaybe Aeson.decode mS2c 
+
+dynButton :: MonadWidget t m => Text -> m (Event t ())
+dynButton s = do
+  (e, _) <- el' "button" $ text s
+  pure $ domEvent Click e
