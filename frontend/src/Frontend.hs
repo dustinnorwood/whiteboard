@@ -21,6 +21,7 @@ import qualified Data.Text as T
 import GHC.Float (int2Double)
 import Language.Javascript.JSaddle
 
+import Obelisk.Configs
 import Obelisk.Frontend
 import Obelisk.Route
 import Obelisk.Generated.Static
@@ -39,7 +40,9 @@ frontend = Frontend
   { _frontend_head = do
       el "title" $ text "Whiteboard"
       elAttr "link" ("href" =: static @"main.css" <> "type" =: "text/css" <> "rel" =: "stylesheet") blank
-  , _frontend_body = prerender_ blank (app $ Just "http://localhost:8000")
+  , _frontend_body = do
+    route <- getTextConfig "common/route"
+    prerender_ blank $ app route
   }
 
 app
