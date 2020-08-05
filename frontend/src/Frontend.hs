@@ -46,17 +46,10 @@ frontend = Frontend
   }
 
 app
-  :: ( DomBuilder t m
-     , MonadFix m
-     , MonadHold t m
-     , PostBuild t m
-     , PerformEvent t m
-     , TriggerEvent t m
-     , Prerender js t m
-     )
+  :: MonadWidget t m
   => Maybe Text
   -> m ()
-app route = prerender_ (pure ()) $ do
+app route = do
   rec
     msgEvDyn <- widgetHold loginWidget (ffor loggedInEv (whiteboardWidget clearOrDrawEv))
     let 
