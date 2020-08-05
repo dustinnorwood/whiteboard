@@ -10,6 +10,7 @@ library
   build-depends: base
                , common
                , frontend
+               , lens
                , obelisk-backend
                , obelisk-route
                , websockets-snap
@@ -26,4 +27,5 @@ executable backend
                , backend
                , common
                , frontend
+               , lens
                , obelisk-backend

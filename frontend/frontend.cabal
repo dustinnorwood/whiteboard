@@ -7,6 +7,7 @@ library
   hs-source-dirs: src
   build-depends: base
                , common
+               , lens
                , obelisk-frontend
                , obelisk-route
                , jsaddle
@@ -24,6 +25,7 @@ executable frontend
   hs-source-dirs: src-bin
   build-depends: base
                , common
+               , lens
                , obelisk-frontend
                , obelisk-route
                , reflex-dom
