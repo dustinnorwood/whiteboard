@@ -104,7 +104,7 @@ whiteboardWidget
   => Event t (Either () DrawEvent)
   -> [DrawEvent]
   -> m (Event t C2S)
-whiteboardWidget inDrawEv initialDrawing = do
+whiteboardWidget inDrawEv _ = do
   rec
     let canvasW = 1600 :: Int
         canvasH = 1200 :: Int
