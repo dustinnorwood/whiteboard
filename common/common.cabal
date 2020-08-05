@@ -6,9 +6,13 @@ build-type: Simple
 library
   hs-source-dirs: src
   build-depends: base
-               , obelisk-route
+               , aeson
+               , containers
+               , dependent-sum
                , lens
                , mtl
+               , obelisk-route
+               , QuickCheck
                , text
   exposed-modules:
     Common.Api

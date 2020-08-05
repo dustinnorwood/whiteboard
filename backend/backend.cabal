@@ -8,11 +8,18 @@ library
   if impl(ghcjs)
     buildable: False
   build-depends: base
+               , aeson
+               , bytestring
                , common
+               , dependent-sum
                , frontend
                , lens
                , obelisk-backend
                , obelisk-route
+               , text
+               , websockets
+               , time
+               , containers
                , websockets-snap
   exposed-modules:
     Backend
@@ -27,5 +34,4 @@ executable backend
                , backend
                , common
                , frontend
-               , lens
                , obelisk-backend

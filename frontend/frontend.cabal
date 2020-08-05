@@ -6,7 +6,11 @@ build-type: Simple
 library
   hs-source-dirs: src
   build-depends: base
+               , array
+               , bytestring
                , common
+               , containers
+               , ghcjs-dom
                , lens
                , obelisk-frontend
                , obelisk-route
@@ -16,6 +20,12 @@ library
                , obelisk-executable-config-lookup
                , obelisk-generated-static
                , text
+               , time
+               , network-uri
+               , unordered-containers
+               , dependent-sum
+               , text
+               , universe
   exposed-modules:
     Frontend
   ghc-options: -Wall
